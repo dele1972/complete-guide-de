@@ -107,7 +107,8 @@ Dabei sind die folgenden Schritte auszuführen (sudo  nur auf Mac/ Linux verwend
 	  back-ticks\`
 
 ## Was sind Components?
-Folgende Grafik zeigt eine mögliche Aufteilung einer Webseite in Components:![Grafik, was sind components](docimages/2018-11-01_11h04_40_was-sind-components.png)
+Folgende Grafik zeigt eine mögliche Aufteilung einer Webseite in 
+Components:![Grafik, was sind components](docimages/2018-11-01_11h04_40_was-sind-components.png)
 
 ### app.component.ts [2.13]
 * `@component` ist ein decorator mit dessen die ts klasse zu einer component wird
@@ -146,7 +147,7 @@ Folgende Grafik zeigt eine mögliche Aufteilung einer Webseite in Components:![G
 4. **Two-Way Binding**: `<input [(ngModel)]="gebundene Datenquelle">`
 
 ### 1) String Interpolation [2.21]
-(*ab hier branch: `2ndStep/databinding`*)  
+(*branch from here: [`2ndStep/databinding`](https://github.com/dele1972/complete-guide-de/tree/2ndStep/databinding)*)  
 
 Angular 2 Feature **change detection** sorgt dafür, Änderungen festgestellt 
 werden und dann die Werte beim `databinding` aktualisiert. Hier wurde z. B. 
@@ -181,7 +182,7 @@ The following Example uses type 'Object'. Therefore we build an Object, with the
 ```
 
 #### custom properties [2.24]
-New App/Component added: `ng g c property-binding --flat --spec -it -is`
+New App/Component added: `ng g c property-binding --flat --spec false -it -is`
 If we want to use external Values via a component side property, this property 
 has to be set with the `@Input()` Decorator which has to be imported too:
 ```angular
@@ -220,7 +221,7 @@ This alias is mandatory for the accessibility of this property from other compon
 [`$event`](https://docs.angularjs.org/guide/expression#-event-) is an Angular Object - this is the actual
 
 ##### custom event [2.26]
-New App/Component added: `ng g c event-binding --flat --spec -it -is`   
+New App/Component added: `ng g c event-binding --flat --spec false -it -is`   
 
 Now we don't want a mother:daughter transmitting but a daughter:mother. This
 will be done by a new Event - [`new EventEmitter`](https://angular.io/api/core/EventEmitter)
@@ -265,20 +266,44 @@ Example:
 <input type="text" [(ngModel)]="aStringProperty">
 ```
 
-## HIER BIN ICH! [2.29]
+## working closer with Angular HTML Template [2.29]
+(*branch from here: [`3rdStep/templateAndLifecycle`](https://github.com/dele1972/complete-guide-de/tree/3rdStep/templateAndLifecycle)*)  
 
+New App/Component added: `ng g c other --flat --spec false -it -is`   
 
+### [Template reference variables](https://angular.io/guide/template-syntax#ref-vars) [2.29]
+`#thisInputElement`: with `#` builds Angular a reference to the Element 
 
+#### Trigger the 'change detection' Trick [2.29]
+```html
+<input type="text" #input (keydown)="0"/>
+```
+To start the change detection, use `(keydown)` or another event with nothing. 
+In this case `input.value` will change by using as String Interpolation elsewhere.
 
+### data exchange Angular Typescript with Template Element ([`@ViewChild`](https://angular.io/api/core/ViewChild))
+export class:
+* define reference: `@ViewChild('inputRef') inputEl[: ElementRef];`  
+  * `ViewChild` Modul has to be imported
+  * `[]` shows optional enhancement for Type specification
+* use: `this.inputEl.nativeElement.value = 'New String Value';`
 
+### data exchange Angular Typescript with 'mother' Element via `ng-content`  ([`@ContenChild`](https://angular.io/api/core/ContentChild))
+export class:
+* define reference: `@ContenChild('paragraphRef') pEl: ElementRef;`  
+  * `ContentChild` Modul has to be imported
+* use: `this.pEl.nativeElement.innerText = 'New String Value';`
+  * `innerText`, because in this example the inner Text of the 
+  `<ng-content>` element has to be overwritten (more accurate: 
+  `<app-other><p #paragraph>Some Text</p></app-other>`)
+
+## Component Lifecycles [2.30]
+![Grafik, Lifecycle Hooks](docimages/2018-11-06_11h49_26_lifecycle-hooks.png)
 
 ## Problems/Questions
 ### getting Browser Error "`[WDS] Disconnected!`"
 WDS possible stands for webpack-dev-server, this is located/defined at `node_modules` Folder. 
 Maybe in [this Stackoverflow Article](https://stackoverflow.com/questions/36917722/keep-getting-wds-disconnected-error) you find an answer... 
-
-
-
 
 
 
