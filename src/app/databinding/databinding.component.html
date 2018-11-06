@@ -1,0 +1,28 @@
+<h4>String Interpolation</h4>
+<p>
+  <!-- primitive Typen (String, Number, Boolean) werden einfach als String ausgegeben - Objekte jedoch nicht: -->
+  {{ aStringProperty}}<br />
+  {{ aNumberProperty}}
+</p>
+<hr />
+<h4>Property Binding</h4>
+<p [innerText]="aStringProperty"></p>
+<div>
+  <input type="text" value="{{aNumberProperty}}"><!-- via String Interpolation and regular html value attribute -->
+  <input type="text" [value]="aNumberProperty"><!-- via Property Binding and angular based attribute [value] -->
+</div>
+<div [ngClass]="{'red-border': myAttachClass}">Text</div><!-- {} is a javascript object, 'red-border' is the key (a classname), value is true or false set dynamically by String Interpolation -->
+<div [ngStyle]="{'background-color': 'blue'}">Text 2</div><!-- now we set a css attribut via property binding -->
+
+<app-property-binding [myName]="'Max'"></app-property-binding><!-- '' indicates, that a string is passed to myName -->
+
+<hr />
+<h4>Event Binding</h4>
+<button (click)="myAttachClass=false">click me!</button>
+<button (click)="myOnClick($event)">click me too!</button>
+<app-event-binding (clicked)="aStringProperty = $event"></app-event-binding>
+
+<hr />
+<h4>Two-Way-Binding</h4>
+<input type="text" [value]="aStringProperty" (keyup)="aStringProperty = thisInputElement.value" #thisInputElement>
+<input type="text" [(ngModel)]="aStringProperty">

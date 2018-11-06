@@ -7,6 +7,15 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 g.E.: [1.6] means chapter 1, section 6
 
+## prerequisite
+
+### Node.JS
+Installed? Test with `npm -v` on commandprompt. Otherwise:  
+- [download](https://nodejs.org/de/) an install node
+
+### AngularCLI  
+Install with:
+ `npm install -g @angular/cli`
 ---
 
 
@@ -97,7 +106,10 @@ Dabei sind die folgenden Schritte auszuführen (sudo  nur auf Mac/ Linux verwend
     \`mit  
 	  back-ticks\`
 
-## app.component.ts [2.13]
+## Was sind Components?
+Folgende Grafik zeigt eine mögliche Aufteilung einer Webseite in Components:![Grafik, was sind components](docimages/2018-11-01_11h04_40_was-sind-components.png)
+
+### app.component.ts [2.13]
 * `@component` ist ein decorator mit dessen die ts klasse zu einer component wird
 * selector: selektion mit der dann die komponente ersetzt wird
   * `'app-root'` -> es wird das Element <app-root> ersetzt
@@ -106,8 +118,8 @@ Dabei sind die folgenden Schritte auszuführen (sudo  nur auf Mac/ Linux verwend
   * siehe hierzu src/main.ts und src/app/app.module.ts
 * template muss nicht eine externe Datei sein, sondern kann auch html-abschnitt als string angegeben werden [2.14]
 
-## components anlegen [2.15]
-1. manuell (Dateien selbs anlegen)
+### components anlegen [2.15]
+1. manuell (Dateien selbst anlegen)
   * `apps/other/` anlegen
   * `apps/other/other.componient.html` anlegen
   * `apps/other/other.componient.ts` anlegen
@@ -121,17 +133,153 @@ Dabei sind die folgenden Schritte auszuführen (sudo  nur auf Mac/ Linux verwend
     * `--inline-styles` oder `-is`		keine extra css datei erstellen
     * `--spec false`					        keine Unit-Testdatei erstellen
 
-## component css [2.18]
+### component css [2.18]
 * css in der component definiert, gilt nur für diese component, nicht für childs!
 * Stichwort: ShadowDOM
 * jedes css gestylte element bekommt ein component eigenes attribut und wird beim endprodukt (der html seite) dann zu beginn entsprechend gestylte
 
 ## Databinding [2.20]
 ### Methoden
-* **String Interpolation**: `{{ Ausdruck, der in einen String resultiert }}`
-* **Property Binding**: `<button [disabled]="Ausdruck, der in einen benötigten Property Type resultiert">`
-* **Event Binding**: `<button (click)="Ausdruck, das das Event behandelt">`
-* **Two-Way Binding**: `<input [(ngModel)]="gebundene Datenquelle">`
+1. **String Interpolation**: `{{ Ausdruck, der in einen String resultiert }}`
+2. **Property Binding**: `<button [disabled]="Ausdruck, der in einen benötigten Property Type resultiert">`
+3. **Event Binding**: `<button (click)="Ausdruck, das das Event behandelt">`
+4. **Two-Way Binding**: `<input [(ngModel)]="gebundene Datenquelle">`
+
+### 1) String Interpolation [2.21]
+(*ab hier branch: `2ndStep/databinding`*)  
+
+Angular 2 Feature **change detection** sorgt dafür, Änderungen festgestellt 
+werden und dann die Werte beim `databinding` aktualisiert. Hier wurde z. B. 
+in `databinding.component.ts` ein Konstruktor hinzugefügt, welcher die 
+asynchrone Funktion `setTimeout()` verwendet um die *property* 
+`aNumberProperty` nach drei Sekunden zu erhöhen.  
+
+Dafür gibt es unter Angular2 ein paar Events die eine Aktualisierung 
+erkennen. Das Fertigstellen von asynchronen Funktionen (wie `setTimeout()`) 
+ist eins dieser Events
+
+### 2) Property Binding [2.22-2.24]
+![Grafik, Property & Event Binding](docimages/2018-11-05_08h16_57_property_and_event_binding.png)  
+#### bind a HTML Property (`value`)
+```html
+<input type="text" [value]="aNumberProperty">
+```
+
+#### bind an Angular Property ([`[ngClass]`](https://angular.io/api/common/NgClass)) [2.23]
+In this Example the Angular `ngClass` Directive is used. Data will be transmitted via property binding.
+This Directive supports three Value types:
+1. String (`'first second'`)
+2. Array (`['first', 'second']`)
+3. Object (`{'first': true, 'second': false}`)  
+
+The following Example uses type 'Object'. Therefore we build an Object, with the
+ css classname as keyname and a String Interpolation as Value. 'red-border' is 
+ defined by src/app/databinding/databinding.component.ts:styles and 'myAttachClass'
+ is defined in databinding.component.ts too.
+```html
+<div [ngClass]="{'red-border': myAttachClass}">Text</div>
+```
+
+#### custom properties [2.24]
+New App/Component added: `ng g c property-binding --flat --spec -it -is`
+If we want to use external Values via a component side property, this property 
+has to be set with the `@Input()` Decorator which has to be imported too:
+```angular
+import { ..., Input } from '@angular/core';
+export class ComponentClassName {
+  @Input() propertyName: string; // Type assignment with Typescript
+}
+``` 
+see also: [Type assignment with Typescript](https://www.typescriptlang.org/docs/handbook/basic-types.html)
+
+#### alternate Property Binding [2.27]
+With `@Input()` we configure property binding - therefor we have to:
+* import `Input` Module (from `@angular/core`)
+
+Alternatively you can add a new key `inputs: ['propertyName(s)']` to the component Decorator. 
+Then you don't need to import the `Input` Module and don't have to use the `@Input()` Decorator 
+for each Property of the component class. But the other way is more than less best practice 😉
+
+#### alternate binding name (alias) for outer access
+`@Input('outerPropertyName') innerPropertyName: TYPE;`  
+This alias is mandatory for the accessibility of this property from other components.
+
+### 3) Event Binding [2.25]
+[`ngClick`](https://docs.angularjs.org/api/ng/directive/ngClick)  
+
+#### click Event with inline Angular-Code
+```html
+<button (click)="myAttachClass=false">click me!</button>
+```
+
+#### click Event with Angular-Component-Function
+`myOnClick()` is defined in `src/app/databinding/databinding.component.ts`
+```html
+<button (click)="myOnClick($event)">click me too!</button>
+```
+[`$event`](https://docs.angularjs.org/guide/expression#-event-) is an Angular Object - this is the actual
+
+##### custom event [2.26]
+New App/Component added: `ng g c event-binding --flat --spec -it -is`   
+
+Now we don't want a mother:daughter transmitting but a daughter:mother. This
+will be done by a new Event - [`new EventEmitter`](https://angular.io/api/core/EventEmitter)
+a module that has to be imported by the component.  
+
+`newEventEmitter<string>()` EventEmitter is a generic type, so we can define 
+the used data type with `<>`. In this case a string.  
+With [`emit`](https://angular.io/api/core/EventEmitter#emit) we can fire an 
+event - `this.clicked.emit('my new Text');` will fire the custom `clicked` 
+Event with `'my new Text'` as `$event` Data.  
+
+Because we want to use this custom Event from outside of the component, this
+has to be defined with the `@Output()` Decorator, which must be imported too.  
+`@Output() clicked = new EventEmitter<string>();`
+
+```html
+<app-event-binding (clicked)="aStringProperty = $event"></app-event-binding>
+```
+`$event` stores the Event-Data (in this case `'my new Text'` from the emit
+ call) and will be copied to the `aStringProperty` Property.
+
+### 4) Two-Way Binding [2.28]
+#### long way 'manually'
+Example:  
+```html
+<input type="text" [value]="aStringProperty" (keyup)="aStringProperty = thisInputElement.value" #thisInputElement>
+```
+
+#### short way 'ngModel'
+Uses [`ngModel`](https://angular.io/api/forms/NgModel)  
+which needs the NgModule `FormsModule` imported by `app.module.ts`:
+* `import {FormsModule} from '@angular/forms';` and
+* `@NgModule({`  
+      `...`  
+      `imports: [`  
+       `...,`  
+       `FormsModule`  
+  `],`  
+
+Example:
+```html
+<input type="text" [(ngModel)]="aStringProperty">
+```
+
+## HIER BIN ICH! [2.29]
+
+
+
+
+
+
+## Problems/Questions
+### getting Browser Error "`[WDS] Disconnected!`"
+WDS possible stands for webpack-dev-server, this is located/defined at `node_modules` Folder. 
+Maybe in [this Stackoverflow Article](https://stackoverflow.com/questions/36917722/keep-getting-wds-disconnected-error) you find an answer... 
+
+
+
+
 
 
 ---
