@@ -2,6 +2,9 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.3 for following the Udemy course '[Angular 2 verstehen und anwenden](https://www.udemy.com/der-angular-2-kurs/)'
 
+<a name="toc"></a>
+## Table of Content
+
 ## meine Konvention in dieser Datei
 '[c.s]' in headlines showing the corresponding course (c)hapter and (s)ection
 
@@ -71,7 +74,7 @@ Dabei sind die folgenden Schritte auszuführen (sudo  nur auf Mac/ Linux verwend
 		[sudo] npm install angular-cli@latest -g
 ```
 
-## Dateien und Verzeichnisse im Angular CLI (Auswahl) [1.9]
+## Dateien und Verzeichnisse im Angular CLI (Auswahl) [1.9] [↸](#toc)
 ```
   Project/
 		e2e/					    end-to-end tests via Protractor
