@@ -4,13 +4,29 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 <a name="toc"></a>
 ## Table of Content
+1. [prerequisite](#prerequisite)
+1. [New Project](#new_project)
+1. [Angular CLI Server starten](#start_server)
+1. [Troubleshooting: Angular CLI / Angular 2 Setup](#troubleshooting_setup)
+1. [Dateien und Verzeichnisse im Angular CLI (Auswahl)](#files_and_folders)
+1. [TypeScript](#typescript)
+1. [What are Components?](#whatcomponentsare)
+1. [Databinding](#databinding)
+   1. [String Interpolation](#string_interpolation)
+   1. [Property Binding](#property_binding)
+   1. [Event Binding](#event_binding)
+   1. [Two-Way Binding](#two-way_binding)
+1. [working closer with Angular HTML Template](#working_closer_with_angular_html_template)
+1. [Component Lifecycles](#component_lifecycles)
+1. [Problems/Questions](#problems_questions)
 
 ## meine Konvention in dieser Datei
 '[c.s]' in headlines showing the corresponding course (c)hapter and (s)ection
 
 g.E.: [1.6] means chapter 1, section 6
 
-## prerequisite
+<a name="prerequisite"></a>
+## prerequisite [↸](#toc)
 
 ### Node.JS
 Installed? Test with `npm -v` on commandprompt. Otherwise:  
@@ -19,7 +35,11 @@ Installed? Test with `npm -v` on commandprompt. Otherwise:
 ### AngularCLI  
 Install with:
  `npm install -g @angular/cli`
+
 ---
+<a name="new_project"></a>
+## New Project [↸](#toc)
+(*branch from here: [`3rdStep/templateAndLifecycle`](https://github.com/dele1972/complete-guide-de/tree/3rdStep/templateAndLifecycle)*)  
 
 
 **Neues Angular Projekt erstellen**:
@@ -29,7 +49,9 @@ ng new complete-guide-de
 
 Das Projektverzeichnis: `c:\dev\projects\udemy\complete-guide-de`
 
-## Server starten
+---
+<a name="start_server"></a>
+## Angular CLI Server starten [↸](#toc)
 per Standard wird port 4200 verwendet, unser CP läuft lokal auch darüber, also einen neuen Port zum Spielen angeben
 	`complete-guide-de>ng serve --port 4201`
 
@@ -49,7 +71,9 @@ per Standard wird port 4200 verwendet, unser CP läuft lokal auch darüber, also
 ```
 ... folgendes key/val Paar hinzugefügt: `"port": 4201`
 
-## Troubleshooting: Angular CLI / Angular 2 Setup [1.6]
+---
+<a name="troubleshooting_setup"></a>
+## Troubleshooting: Angular CLI / Angular 2 Setup [1.6] [↸](#toc)
 Normalerweise sollte sowohl bei der Installation des CLI als auch beim Erstellen und Starten der Angular 2 App alles problemlos funktionieren.
 
 Hier sind ein paar Hinweise falls es zu Problemen kommt:
@@ -74,6 +98,8 @@ Dabei sind die folgenden Schritte auszuführen (sudo  nur auf Mac/ Linux verwend
 		[sudo] npm install angular-cli@latest -g
 ```
 
+---
+<a name="files_and_folders"></a>
 ## Dateien und Verzeichnisse im Angular CLI (Auswahl) [1.9] [↸](#toc)
 ```
   Project/
@@ -101,7 +127,9 @@ Dabei sind die folgenden Schritte auszuführen (sudo  nur auf Mac/ Linux verwend
 		app.module.ts
 ```
 
-## TypeScript [1.10]
+---
+<a name="typescript"></a>
+## TypeScript [1.10] [↸](#toc)
 * erweitert JS u.a. um: (explizite) Typen, Klassen, Module, ...
 * wird zu JS kompiliert
 * `npm install typescript -g`
@@ -109,7 +137,9 @@ Dabei sind die folgenden Schritte auszuführen (sudo  nur auf Mac/ Linux verwend
     \`mit  
 	  back-ticks\`
 
-## Was sind Components?
+---
+<a name="whatcomponentsare"></a>
+## What are Components? [↸](#toc)
 Folgende Grafik zeigt eine mögliche Aufteilung einer Webseite in 
 Components:![Grafik, was sind components](docimages/2018-11-01_11h04_40_was-sind-components.png)
 
@@ -142,14 +172,17 @@ Components:![Grafik, was sind components](docimages/2018-11-01_11h04_40_was-sind
 * Stichwort: ShadowDOM
 * jedes css gestylte element bekommt ein component eigenes attribut und wird beim endprodukt (der html seite) dann zu beginn entsprechend gestylte
 
-## Databinding [2.20]
+---
+<a name="databinding"></a>
+## Databinding [2.20] [↸](#toc)
 ### Methoden
 1. **String Interpolation**: `{{ Ausdruck, der in einen String resultiert }}`
 2. **Property Binding**: `<button [disabled]="Ausdruck, der in einen benötigten Property Type resultiert">`
 3. **Event Binding**: `<button (click)="Ausdruck, das das Event behandelt">`
 4. **Two-Way Binding**: `<input [(ngModel)]="gebundene Datenquelle">`
 
-### 1) String Interpolation [2.21]
+<a name="string_interpolation"></a>
+#### 1) String Interpolation [2.21] [↸](#toc)
 (*branch from here: [`2ndStep/databinding`](https://github.com/dele1972/complete-guide-de/tree/2ndStep/databinding)*)  
 
 Angular 2 Feature **change detection** sorgt dafür, Änderungen festgestellt 
@@ -162,7 +195,8 @@ Dafür gibt es unter Angular2 ein paar Events die eine Aktualisierung
 erkennen. Das Fertigstellen von asynchronen Funktionen (wie `setTimeout()`) 
 ist eins dieser Events
 
-### 2) Property Binding [2.22-2.24]
+<a name="property_binding"></a>
+### 2) Property Binding [2.22-2.24] [↸](#toc)
 ![Grafik, Property & Event Binding](docimages/2018-11-05_08h16_57_property_and_event_binding.png)  
 #### bind a HTML Property (`value`)
 ```html
@@ -208,7 +242,8 @@ for each Property of the component class. But the other way is more than less be
 `@Input('outerPropertyName') innerPropertyName: TYPE;`  
 This alias is mandatory for the accessibility of this property from other components.
 
-### 3) Event Binding [2.25]
+<a name="event_binding"></a>
+### 3) Event Binding [2.25] [↸](#toc)
 [`ngClick`](https://docs.angularjs.org/api/ng/directive/ngClick)  
 
 #### click Event with inline Angular-Code
@@ -246,7 +281,8 @@ has to be defined with the `@Output()` Decorator, which must be imported too.
 `$event` stores the Event-Data (in this case `'my new Text'` from the emit
  call) and will be copied to the `aStringProperty` Property.
 
-### 4) Two-Way Binding [2.28]
+<a name="two-way_binding"></a>
+### 4) Two-Way Binding [2.28] [↸](#toc)
 #### long way 'manually'
 Example:  
 ```html
@@ -269,7 +305,9 @@ Example:
 <input type="text" [(ngModel)]="aStringProperty">
 ```
 
-## working closer with Angular HTML Template [2.29]
+---
+<a name="working_closer_with_angular_html_template"></a>
+## working closer with Angular HTML Template [2.29] [↸](#toc)
 (*branch from here: [`3rdStep/templateAndLifecycle`](https://github.com/dele1972/complete-guide-de/tree/3rdStep/templateAndLifecycle)*)  
 
 New App/Component added: `ng g c other --flat --spec false -it -is`   
@@ -300,10 +338,18 @@ export class:
   `<ng-content>` element has to be overwritten (more accurate: 
   `<app-other><p #paragraph>Some Text</p></app-other>`)
 
-## Component Lifecycles [2.30]
+---
+<a name="component_lifecycles"></a>
+## Component Lifecycles [2.30] [↸](#toc)
 ![Grafik, Lifecycle Hooks](docimages/2018-11-06_11h49_26_lifecycle-hooks.png)
 
-## Problems/Questions
+
+
+
+
+---
+<a name="problems_questions"></a>
+## Problems/Questions [↸](#toc)
 ### getting Browser Error "`[WDS] Disconnected!`"
 WDS possible stands for webpack-dev-server, this is located/defined at `node_modules` Folder. 
 Maybe in [this Stackoverflow Article](https://stackoverflow.com/questions/36917722/keep-getting-wds-disconnected-error) you find an answer... 
