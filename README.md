@@ -341,10 +341,14 @@ export class:
 ---
 <a name="component_lifecycles"></a>
 ## Component Lifecycles [2.30] [↸](#toc)
+(*branch from here: [`4thStep/lifecycle`](https://github.com/dele1972/complete-guide-de/tree/4thStep/lifecycle)*)  
+
 ![Grafik, Lifecycle Hooks](docimages/2018-11-06_11h49_26_lifecycle-hooks.png)
 
+New App/Component added: `ng g c lifecycle --flat --spec false -it -is`   
 
-
+In this Branch for each Hook is a log added. To see ngOnChanges, there is a
+little 'destroy' Button implemented (via `*ngIf`).
 
 
 ---
