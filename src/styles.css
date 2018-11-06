@@ -1,7 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-* {
-  background: whitesmoke;
-  font-family: "Arial Unicode MS";
-  margin: 0;
-  padding: 0;
+body {
+  padding: 40px;
 }

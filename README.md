@@ -19,6 +19,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 1. [working closer with Angular HTML Template](#working_closer_with_angular_html_template)
 1. [Component Lifecycles](#component_lifecycles)
 1. [Problems/Questions](#problems_questions)
+1. [Section 3 - Start App dev (Components and Databinding)](#sec3_start)
 
 ## meine Konvention in dieser Datei
 '[c.s]' in headlines showing the corresponding course (c)hapter and (s)ection
@@ -349,6 +350,34 @@ New App/Component added: `ng g c lifecycle --flat --spec false -it -is`
 
 In this Branch for each Hook is a log added. To see ngOnChanges, there is a
 little 'destroy' Button implemented (via `*ngIf`).
+
+---
+<a name="sec3_start"></a>
+## Section 3 - Start App dev (Components and Databinding) [3.33] [↸](#toc)
+(*branch from here: [`section3/1-components-databinding-start`](https://github.com/dele1972/complete-guide-de/tree/section3/1-components-databinding-start)*)  
+
+By installing Bootstrap via `npm`, it can be used by adding bootstrap styles 
+in `angular.json`:  
+```json
+"styles": [
+  "../node_modules/bootstrapp/dist/css/bootstrap.min.css",
+  "styles.css"
+],
+```
+
+### generate Components for the recipe app [3.36]
+1. `ng g c header --flat --spec false -is`   
+2. `ng g c recipe --spec false -is`   
+3. `ng g c shopping-list --spec false -is`   
+4. `cd src/app/recipe`   
+5. `ng g c recipe-list --spec false -is`   
+6. `ng g c recipe-detail --spec false -is`   
+7. `cd recipe-list`   
+8. `ng g c recipe-item --flat --spec false -is`   
+
+
+
+
 
 
 ---
