@@ -19,6 +19,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 1. [working closer with Angular HTML Template](#working_closer_with_angular_html_template)
 1. [Component Lifecycles](#component_lifecycles)
 1. [Problems/Questions](#problems_questions)
+1. [Section 3 - Start App dev (Components and Databinding)](#sec3_start)
+   1. [An Angular Datamodel](#sec3_datamodel)
 
 ## meine Konvention in dieser Datei
 '[c.s]' in headlines showing the corresponding course (c)hapter and (s)ection
@@ -349,6 +351,100 @@ New App/Component added: `ng g c lifecycle --flat --spec false -it -is`
 
 In this Branch for each Hook is a log added. To see ngOnChanges, there is a
 little 'destroy' Button implemented (via `*ngIf`).
+
+---
+<a name="sec3_start"></a>
+## Section 3 - Start App dev (Components and Databinding) [3.33] [↸](#toc)
+(*branch from here: [`section3/1-components-databinding-start`](https://github.com/dele1972/complete-guide-de/tree/section3/1-components-databinding-start)*)  
+
+By installing Bootstrap via `npm`, it can be used by adding bootstrap styles 
+in `angular.json`:  
+```json
+"styles": [
+  "../node_modules/bootstrapp/dist/css/bootstrap.min.css",
+  "styles.css"
+],
+```
+
+### generate Components for the recipe app [3.36]
+1. `ng g c header --flat --spec false -is`   
+2. `ng g c recipe --spec false -is`   
+3. `ng g c shopping-list --spec false -is`   
+4. `cd src/app/recipe`   
+5. `ng g c recipe-list --spec false -is`   
+6. `ng g c recipe-detail --spec false -is`   
+7. `cd recipe-list`   
+8. `ng g c recipe-item --flat --spec false -is`   
+
+<a name="sec3_datamodel"></a>
+### A datamodel [↸](#toc)
+Goal: create a new file with a class definition, to handle data
+
+#### build a model [3.37] 
+Add a model `recipe/recipe.model.ts` to store values for the App.
+
+☝ This is a short form of building ts properties, naming parameters and 
+bind the parameters to the properties. 
+```typescript
+constructor(public name: string, public description: string, public imagepath: string) {
+  //...
+  }
+```
+
+#### use model
+`src/app/recipe/recipe-list/recipe-list.component.ts`:  
+`import { Recipe} from '../recipe.model';`
+`recipe = new Recipe('Dummy', 'Dummy', 'http://placeimg.com/320/240/tech');`
+
+`src/app/recipe/recipe-list/recipe-item.component.ts`:
+`@Input() recipe: Recipe;`
+
+`src/app/recipe/recipe-list/recipe-list.component.html`
+`<app-recipe-item [recipe]="recipe"></app-recipe-item>`
+`[recipe]` ⟶ recipe-item.component.ts
+`recipe`  ⟶ mother: recipe-list.component.ts
+
+#### output model
+`src/app/recipe/recipe-list/recipe-item.component.html`:
+````html
+  <div class="pull-left">
+    <h4 class="list-group-item-heading">{{ recipe.name }}</h4>
+    <p class="list-group-item-text">{{ recipe.description }}</p>
+  </div>
+  <div class="pull-right">
+    <img [src]="recipe.imagepath" alt="recipe image" class="img-responsive" style="max-height: 50px;">
+  </div>
+````
+
+#### recipe-details [3.39] ☝⚠
+`src/app/recipe/recipe-detail/recipe-detail.component.ts`:
+`@Input() selectedRecipe: Recipe;`
+
+`src/app/recipe/recipe-detail/recipe-detail.component.html`:
+Problem -  actually is recipe-detail always shown, but if no recipe is
+selected, `selectedRecipe.name` would be undefined.
+`<h1>{{ selectedRecipe?.name }}</h1>`
+With `?` Angular will only access to `selectedRecipe` if it isn't undefined
+or NULL 
+
+### a click-property-component-chain (longway) [3.40]
+1. **emit first Event** during onSelect() in 
+   `recipe-list/recipe-item.component.ts`
+   and send `this.recipe`
+2. **get** this **event** at mother component level in 
+   `recipe-list.component.html` and 
+3. **pass data** via `onSelected($event)`
+   in `recipe-list.component.ts` and
+4. **emit 2nd Event** by passing $event as Recipe Object
+5. This **Event** is **captured** by `recipe.component.html`
+   and will be used by `recipe.component.ts`
+   * `[selectedRecipe]` belongs to `recipe-detail.component.ts: @Input() selectedRecipe: Recipe;`
+   * `selectedRecipe` belongs to `recipe.component.ts:10`
+   * `(recipeSelected)` belongs to `recipe-list.component.ts`
+
+### adding grocery-list [3.41]
+1. `cd src/app/shopping-list`   
+2. `ng g c shopping-list-add --spec false -is --flat`   
 
 
 ---
