@@ -442,6 +442,9 @@ or NULL
    * `selectedRecipe` belongs to `recipe.component.ts:10`
    * `(recipeSelected)` belongs to `recipe-list.component.ts`
 
+### adding grocery-list [3.41]
+1. `cd src/app/shopping-list`   
+2. `ng g c shopping-list-add --spec false -is --flat`   
 
 
 ---
