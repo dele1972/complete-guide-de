@@ -19,12 +19,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
    1. [Two-Way Binding](#two-way_binding)
 1. [working closer with Angular HTML Template](#working_closer_with_angular_html_template)
 1. [Component Lifecycles](#component_lifecycles)
-1. [Problems/Questions](#problems_questions)
 1. [Section 3 - Start App dev (Components and Databinding)](#sec3_start)
    1. [An Angular Datamodel](#sec3_datamodel)
 1. [Section 4 - Directives](#sec_4_directives)
    1. [@HostBinding](#sec_4_hostbinding)
    1. [@HostListener](#sec_4_hostlistener)
+1. [Problems/Questions](#problems_questions)
 
 ## meine Konvention in dieser Datei
 '[c.s]' in headlines showing the corresponding course (c)hapter and (s)ection
