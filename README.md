@@ -5,6 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 <a name="toc"></a>
 ## Table of Content
 1. [prerequisite](#prerequisite)
+1. [Clone Project](#clone_project)
 1. [New Project](#new_project)
 1. [Angular CLI Server starten](#start_server)
 1. [Troubleshooting: Angular CLI / Angular 2 Setup](#troubleshooting_setup)
@@ -21,6 +22,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 1. [Problems/Questions](#problems_questions)
 1. [Section 3 - Start App dev (Components and Databinding)](#sec3_start)
    1. [An Angular Datamodel](#sec3_datamodel)
+1. [Section 4 - Directives](#sec_4_directives)
+   1. [@HostBinding](#sec_4_hostbinding)
+   1. [@HostListener](#sec_4_hostlistener)
 
 ## meine Konvention in dieser Datei
 '[c.s]' in headlines showing the corresponding course (c)hapter and (s)ection
@@ -38,13 +42,26 @@ Installed? Test with `npm -v` on commandprompt. Otherwise:
 Install with:
  `npm install -g @angular/cli`
 
+<a name="clone_project"></a>
+### Cloning this Tutorial Project [↸](#toc)
+In the next chapter the project will be build from the beginning. But you
+can clone the project from GitHub too. In subsequent to this case Angular 
+CLI has to install necessary files and folders and **the following chapter
+'New Project' is obsolete** 😉
+
+1. open a shell and navigate to the folder where you want to install this
+   project
+2. `git clone https://github.com/dele1972/complete-guide-de.git`
+3. `cd complete-guide-de`
+4. `npm install`
+
 ---
 <a name="new_project"></a>
 ## New Project [↸](#toc)
 (*branch from here: [`3rdStep/templateAndLifecycle`](https://github.com/dele1972/complete-guide-de/tree/3rdStep/templateAndLifecycle)*)  
 
-
 **Neues Angular Projekt erstellen**:
+(*only necessary if project isn't be cloned*)
 ```
 ng new complete-guide-de
 ```
@@ -446,15 +463,92 @@ or NULL
 1. `cd src/app/shopping-list`   
 2. `ng g c shopping-list-add --spec false -is --flat`   
 
+---
+<a name="sec_4_directives"></a>
+## Section 4 - Directives [4.42] [↸](#toc)
+(*branch from here: [`section4/directives-master`](https://github.com/dele1972/complete-guide-de/tree/section4/directives-master)*)  
+
+![Grafik, Directives are commands](docimages/2018-11-07_14h44_41_directives-are-commands.png)
+
+![Grafik, Attribute & Structural Directives](docimages/2018-11-08_08h42_23_attributes-and-structural-directive.png)
+
+### custom attribute directive [4.44]
+Add New directive: `ng g d highlight`  
+`d` is short form of `directive` 
+```typescript
+@Directive({
+  selector: '[appHighlight]'
+})
+```
+* The `@Directive` decorator has'nt got `template:` and `styles:` 
+  elements/properties.  
+* `[]` of `[appHighlight]` symbolize css attribute selector and not an angular
+   property binding!  
+
+```typescript
+export class HighlightDirective {
+  constructor(myElRef: ElementRef) {
+    myElRef.nativeElement.style.backgroundColor = 'green';
+  }
+}
+```
+As Parameter of the constructor we could tell which dependencies we want to
+use. Keyword for this behavior is **dependency injection** - which will be
+closer treated later in the tutorial. It is possible to name a special class
+or object.  
+In this case we want to make a dependeny to the Element which will use our
+directive as attribute. 
+
+This Example is not best practice: **avoid the use of direct css attributes 
+or HTML DOM references** - instead use Renderer2.setStyle(): [4.48]
+
+```typescript
+  constructor(myElRef: ElementRef, myRenderer: Renderer2) {
+    // myElRef.nativeElement.style.backgroundColor = 'green';
+    // myRenderer.setElementStyle(myElRef.nativeElement, 'background-color', 'red');
+    myRenderer.setStyle(myElRef.nativeElement, 'background-color', 'red');
+  }
+```
+
+<a name="sec_4_hostbinding"></a>
+#### [`@HostBinding` Decorator](https://angular.io/api/core/HostBinding) [4.49] [↸](#toc)
+For the Example before is this a **much simplier way**:  
+`@HostBinding('style.backgroundColor') myColorProperty = 'blue';`  
+`@HostBinding` is a decorator which supports access to a property of the 
+actual Element where this Directive is situated.  
+Within the brackets at first the property `style` is named - then the style
+property in JS/DOM notation (see: [MDN: CSS Properties Reference](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Properties_Reference)).  
+`myColorProperty` is an Angular Property which is bound to the HostBinding 
+Property.
+
+<a name="sec_4_hostlistener"></a>
+#### [`@HostListener` Decorator](https://angular.io/api/core/HostListener) [4.50] [↸](#toc)
+This Decorator can handle [CSS Events](https://developer.mozilla.org/en-US/docs/Web/Events)
+of the Element where this Directive is situated:
+```typescript
+  @HostListener('mouseenter') myMouseenter() {
+    this.myColorProperty = 'silver';
+  }
+```
+
+[HIER BIN ICH [4.51]](https://www.udemy.com/der-angular-2-kurs/learn/v4/t/lecture/6028422?start=0)
 
 ---
 <a name="problems_questions"></a>
 ## Problems/Questions [↸](#toc)
+
 ### getting Browser Error "`[WDS] Disconnected!`"
 WDS possible stands for webpack-dev-server, this is located/defined at `node_modules` Folder. 
 Maybe in [this Stackoverflow Article](https://stackoverflow.com/questions/36917722/keep-getting-wds-disconnected-error) you find an answer... 
 
+### IDE Error: "`Error:Initialization error (angular 2 language service). Cannot read property 'CommandTypes' of undefined`"
+Sometimes the IDE freezes and TypeScript Console throws this stated Error.  
 
+One occasion is to deactivate the Angular Service:  
+Settings (Strg + Alt + S) → "Language & Frameworks" | "TypeScript"
+ → deactivate "Angular Language Service"
+
+![Grafik, Turn of IDE Angular support for Typescript](docimages/2018-11-08_11h25_55_turn-of-ide-angular.png)
 
 ---
 
